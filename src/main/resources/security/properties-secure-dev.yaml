@@ -1,0 +1,8 @@
+auth:
+  pass: "![k/z4YeZ5HZB0rp0QJY2GGA==]"
+  user: "![kpvT0WO6lExi7FZTpcsIEw==]"
+  
+aws:
+  sqs:
+    accessKey: "![PwpAHP+WTK93ZhDV8z/5se5SO5+Z+3Hh]"
+    secretKey: "![/61Ae8hykPlAv8Hqq2GxDLPqiVeF3Ix3PUthjBprhM6EppJtJXJyRLpxHAnCx1qZ]"

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs" 
+  xmlns:spring="http://www.mulesoft.org/schema/mule/spring"
+  xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" 
+  xmlns:logger="http://www.mulesoft.org/schema/mule/logger"
+  xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" 
+  xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+  xmlns:http="http://www.mulesoft.org/schema/mule/http"
+  xmlns="http://www.mulesoft.org/schema/mule/core" 
+  xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                      http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+                      http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+                      http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+                      http://www.mulesoft.org/schema/mule/logger http://www.mulesoft.org/schema/mule/logger/current/mule-logger.xsd
+                      http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+                      http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd
+http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd">
+  
+  
+  
+  <global-property 
+    doc:name="Global Property" 
+    doc:id="dc13c2d4-d277-4e72-b33f-dd7c3ce9547a" 
+    name="mule.env" 
+    value="dev">
+  </global-property>
+  
+  
+  
+  <http:listener-config name="apiHttpListenerConfig">
+    <http:listener-connection
+      host="${http.host}"
+      port="${http.port}"
+      protocol="HTTP" />
+  </http:listener-config>
+  
+  
+  
+<!--   <api-gateway:autodiscovery
+    doc:name="API Autodiscovery"
+    doc:id="cf302549-1346-4958-aa20-2c7bbdd44a51"
+    apiId="${api.id}"
+    ignoreBasePath="true"
+    flowRef="api-main">
+  </api-gateway:autodiscovery>   -->
+  
+  
+  <apikit:config
+    name="api-config"
+    api="${api.spec}"
+    outboundHeadersMapName="outboundHeaders"
+    httpStatusVarName="httpStatus">
+  </apikit:config>
+  
+  
+  <!-- Config Properties -->
+  <configuration-properties 
+    doc:name="independentConfigurationProperties" 
+    doc:id="b3ba0dfb-4d09-4a73-934b-106495be05fe" 
+    file="properties/properties.yaml">
+  </configuration-properties>
+  
+  
+  
+  <configuration-properties
+    doc:name="env-specificConfigurationProperties"
+    doc:id="d816f1b0-3247-439c-916b-07d3823fffd8"
+    file="properties/properties-${mule.env}.yaml" />
+    
+
+
+  <!-- Logger -->
+  <logger:config 
+    name="loggerConfig" 
+    doc:name="Logger Config" 
+    doc:id="6a37e850-4d56-46af-b9fd-3f2f429ed835" 
+    applicationName="${api.artifactId}" 
+    environment="${mule.env}" disabledFields="content">
+  </logger:config>
+  
+  
+
+  <!-- Security -->
+  <global-property 
+    doc:name="encrypt.key - Global Property"
+    doc:id="a7d34014-65f1-4c8b-83ad-bc91b2f1bacf" 
+    name="encrypt.key"
+    value="W_nXo]g5Hu">
+  </global-property>
+  
+  
+    
+  <secure-properties:config 
+    name="env-SecurePropertiesConfig" 
+    doc:name="Secure Properties Config" 
+    doc:id="a3f2f95a-33fa-49c7-ad1c-a321991d86db" 
+    file="security/properties-secure-${mule.env}.yaml" 
+    key="${encrypt.key}">
+    <secure-properties:encrypt algorithm="Blowfish" />
+  </secure-properties:config>
+
+
+
+  <spring:config 
+    name="springConfig" 
+    doc:name="Spring Config"
+    doc:id="200853e2-6d9a-4727-a6b3-89250e58e640" 
+    files="security/beans.xml">
+  </spring:config>
+    
+    
+    
+  <spring:security-manager 
+    doc:name="springSecurityManager"
+    doc:id="e55ae98b-a2bb-4333-bae1-ae8316868103">
+    <spring:delegate-security-provider 
+      name="memory-provider"
+      delegate-ref="authenticationManager" />
+  </spring:security-manager>
+  
+  
+  
+  <!-- AWS -->
+  <sqs:config 
+    name="amazonSQSconfiguration" 
+    doc:name="Amazon SQS Configuration" 
+    doc:id="d8f601ea-91c7-4eb4-b1b3-fa4760a44910" >
+    <sqs:basic-connection 
+      accessKey="${secure::aws.sqs.accessKey}" 
+      secretKey="${secure::aws.sqs.secretKey}" 
+      testQueueArn="${aws.sqs.queue.arn}" 
+      region="${aws.region}">
+    </sqs:basic-connection>
+  </sqs:config>
+</mule>

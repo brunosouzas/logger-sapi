@@ -1,0 +1,31 @@
+{
+  "headers": {
+    "x-correlation-id": "123123123s",
+    "authorization": "Basic YnJ1bm9zb3V6YXM6T3JYemk0TGgpVw==",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.26.5",
+    "accept": "*/*",
+    "cache-control": "no-cache",
+    "postman-token": "8174c238-3cc1-4b48-9f12-77ad1b72f01e",
+    "host": "localhost:8081",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "770"
+  },
+  "clientCertificate": null,
+  "method": "POST",
+  "scheme": "http",
+  "queryParams": {},
+  "requestUri": "/log",
+  "queryString": "",
+  "version": "HTTP/1.1",
+  "maskedRequestPath": "/log",
+  "listenerPath": "/*",
+  "relativePath": "/log",
+  "localAddress": "/127.0.0.1:8081",
+  "uriParams": {},
+  "rawRequestUri": "/log",
+  "rawRequestPath": "/log",
+  "remoteAddress": "/127.0.0.1:50363",
+  "requestPath": "/log"
+}

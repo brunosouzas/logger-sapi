@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+  
+  
+  
+  <import doc:name="Import" doc:id="de61e9e8-346e-4fef-8317-61f2fd6abc00" file="health-api.xml" />
+  
+  
+  
+  <sub-flow name="check-all-other-dependencies-are-alive" doc:id="9bee0249-fcf6-40b2-a6af-2652c34c1cfc" >
+    <ee:transform doc:name="Transform Message" doc:id="b210f348-e80a-4909-8863-f130f2749bb4" >
+      <ee:message >
+        <ee:set-payload resource="dw/health/payload.dwl" />
+      </ee:message>
+    </ee:transform>
+  </sub-flow>
+</mule>

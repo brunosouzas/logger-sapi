@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.brunosouzas.api</groupId>
+  <artifactId>logger-sapi</artifactId>
+  <version>1.0.0</version>
+  <packaging>mule-application</packaging>
+  
+  <name>logger-sapi</name>
+  
+  
+  
+  <parent>
+    <groupId>com.brunosouzas.api</groupId>
+    <artifactId>mule-bom</artifactId>
+    <version>1.0.2</version>
+  </parent>
+  
+  
+  
+  <properties>
+    <!-- specification -->
+    <api.groupId>13ecf258-fb9f-4dee-b1d3-4626b6c69bc0</api.groupId>
+    <api.artifactId>api-logger</api.artifactId>
+    <api.version>1.0.1</api.version>
+    
+    <!-- dependency version -->
+    <app.common>2.0.1</app.common>
+    <amazon.sqs>5.8.1</amazon.sqs>
+  </properties>
+  
+  
+  
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
+    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+      </plugin>
+      
+      
+      <plugin>
+        <groupId>org.mule.tools.maven</groupId>
+        <artifactId>mule-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <classifier>mule-application</classifier>
+          
+<!--           <cloudHubDeployment>
+            <muleVersion>${ch.muleversion}</muleVersion>
+            <username>${ch.username}</username>
+            <password>${ch.password}</password>
+            <environment>${ch.environment}</environment>
+            <region>${ch.region}</region>
+            <workerType>${ch.workerType}</workerType>
+            <workers>${ch.workers}</workers>
+            <uri>${ch.uri}</uri>
+            <applicationName>${ch.applicationName}</applicationName>
+            <businessGroup>${ch.businessGroup}</businessGroup>
+            <properties>
+              <enc.key>${enc.key}</enc.key>
+              <env>${env}</env>
+              <anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+              <anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+              <anypoint.platform.analytics_base_uri>https://analytics-ingest.anypoint.mulesoft.com</anypoint.platform.analytics_base_uri>
+              <anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
+              <anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com</anypoint.platform.base_uri>
+            </properties>
+          </cloudHubDeployment> -->
+          
+          <executions>
+            <execution>
+              <id>deploy</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>deploy</goal>
+              </goals>
+            </execution>
+          </executions>
+          
+          <sharedLibraries>
+            <sharedLibrary>
+              <groupId>org.springframework.security</groupId>
+              <artifactId>spring-security-config</artifactId>
+            </sharedLibrary>
+          </sharedLibraries>
+        </configuration>
+      </plugin>
+      
+      
+      <plugin>
+        <groupId>com.mulesoft.munit.tools</groupId>
+        <artifactId>munit-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>test</goal>
+              <goal>coverage-report</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+<!-- 		  <properties>
+            <enc.key>${enc.key}</enc.key>
+          </properties> -->
+          <coverage>
+            <runCoverage>true</runCoverage>
+            <formats>
+              <format>html</format>
+              <format>console</format>
+            </formats>
+          </coverage>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  
+  
+  <dependencies>
+    <!-- specification -->
+    <dependency>
+      <groupId>${api.groupId}</groupId>
+      <artifactId>${api.artifactId}</artifactId>
+      <version>${api.version}</version>
+      <classifier>raml</classifier>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.mule.connectors</groupId>
+      <artifactId>mule-http-connector</artifactId>
+      <classifier>mule-plugin</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.mule.connectors</groupId>
+      <artifactId>mule-sockets-connector</artifactId>
+      <classifier>mule-plugin</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.mule.modules</groupId>
+      <artifactId>mule-apikit-module</artifactId>
+      <classifier>mule-plugin</classifier>
+    </dependency>
+    
+    <!-- Munit -->
+    <dependency>
+      <groupId>com.mulesoft.munit</groupId>
+      <artifactId>munit-runner</artifactId>
+      <classifier>mule-plugin</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.mulesoft.munit</groupId>
+      <artifactId>munit-tools</artifactId>
+      <classifier>mule-plugin</classifier>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- logger -->
+    <dependency>
+      <groupId>com.brunosouzas.api</groupId>
+      <artifactId>logger</artifactId>
+      <classifier>mule-plugin</classifier>
+    </dependency>
+    
+    <!-- security -->
+    <dependency>
+      <groupId>com.mulesoft.modules</groupId>
+      <artifactId>mule-secure-configuration-property-module</artifactId>
+      <classifier>mule-plugin</classifier>
+    </dependency>
+    
+    <!-- Spring Security -->
+    <dependency>
+      <groupId>org.mule.modules</groupId>
+      <artifactId>mule-spring-module</artifactId>
+      <classifier>mule-plugin</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
+    </dependency>
+    
+    <!-- common -->
+    <dependency>
+      <groupId>com.brunosouzas.api</groupId>
+      <artifactId>app-common</artifactId>
+      <version>${app.common}</version>
+      <classifier>mule-plugin</classifier>
+    </dependency>
+    
+    <!-- AWS -->
+    <dependency>
+      <groupId>com.mulesoft.connectors</groupId>
+      <artifactId>mule-amazon-sqs-connector</artifactId>
+      <version>${amazon.sqs}</version>
+      <classifier>mule-plugin</classifier>
+    </dependency>
+  </dependencies>
+</project>

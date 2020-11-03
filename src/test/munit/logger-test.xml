@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="api-suite.xml" />
+  <munit:test name="post:\log:application\json:api-config-test" doc:id="5c71023e-cccf-4708-8478-7dca1f8f9b63" >
+    <munit:enable-flow-sources >
+      <munit:enable-flow-source value="api-main" />
+      <munit:enable-flow-source value="post:\log:application\json:api-config" />
+    </munit:enable-flow-sources>
+    <munit:behavior >
+      <munit-tools:spy doc:name="Spy logger::Flow" doc:id="425cf020-d284-4d1a-bd65-d0d496f3fc97" processor="flow-ref">
+        <munit-tools:with-attributes >
+          <munit-tools:with-attribute whereValue="05d2099c-c69e-417a-88cc-f54d8039e72e" attributeName="doc:id" />
+        </munit-tools:with-attributes>
+        <munit-tools:before-call >
+          <munit-tools:assert doc:name="Assert payload" doc:id="c39e1b17-a312-4eca-95ab-0210685eb59a" message="The payload does not match">
+            <munit-tools:that ><![CDATA[#[%dw 2.0
+import postlogapplicationjsonapiconfigtest::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+          </munit-tools:assert>
+        </munit-tools:before-call>
+        <munit-tools:after-call >
+          <munit-tools:assert doc:name="Assert payload" doc:id="59148268-c490-4cfd-a9c7-296a94afea1a" message="The payload does not match">
+            <munit-tools:that ><![CDATA[#[%dw 2.0
+import postlogapplicationjsonapiconfigtest::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+          </munit-tools:assert>
+        </munit-tools:after-call>
+      </munit-tools:spy>
+      <munit:set-event doc:name="Set Input" doc:id="f06a7adb-d23f-4fa2-8e09-b2707ce289e0" >
+        <munit:payload value="#[output application/json --- readUrl('classpath://postlogapplicationjsonapiconfigtest/set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+        <munit:attributes value="#[readUrl('classpath://postlogapplicationjsonapiconfigtest/set-event_attributes.dwl')]" />
+        <munit:variables >
+          <munit:variable key="outboundHeaders" value="#[readUrl('classpath://postlogapplicationjsonapiconfigtest/set-event_variable_.dwl')]" />
+        </munit:variables>
+      </munit:set-event>
+    </munit:behavior>
+    <munit:execution >
+      <flow-ref doc:name="Flow-ref to post:\log:application\json:api-config" doc:id="2a2f76a6-e754-4b04-b45c-8a0156fcc9d9" name="post:\log:application\json:api-config"/>
+    </munit:execution>
+    <munit:validation >
+      <munit-tools:assert doc:name="Assert payload" doc:id="1e19a4b4-8a4f-403c-a43a-76e0c27a7eec" message="The payload does not match">
+        <munit-tools:that ><![CDATA[#[%dw 2.0
+import postlogapplicationjsonapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+      </munit-tools:assert>
+      <munit-tools:verify-call doc:name="Verify logger::Flow" doc:id="a329221c-4e67-4b15-9ca0-441410525541" processor="flow-ref" times="1">
+        <munit-tools:with-attributes >
+          <munit-tools:with-attribute whereValue="05d2099c-c69e-417a-88cc-f54d8039e72e" attributeName="doc:id" />
+        </munit-tools:with-attributes>
+      </munit-tools:verify-call>
+    </munit:validation>
+  </munit:test>
+
+</mule>

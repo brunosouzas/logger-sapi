@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" 
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                          http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                          
+                          
+                          
+  <flow name="logger::Flow" doc:id="c989656e-162f-4571-babd-bedecf6e4bf4" >
+    <ee:transform doc:name="payload" doc:id="e4c80bf2-bed4-40bd-93cc-81f394f95955" >
+      <ee:message >
+        <ee:set-payload resource="dw/logger/api/payload.dwl" />
+      </ee:message>
+    </ee:transform>
+    
+    <logger 
+      doc:name="console logger" 
+      doc:id="90bc5dd1-36af-4e91-95c7-3e949955d6db" 
+      level="ERROR"
+      message="#[payload]" 
+      category="com.brunosouzas.api.log"/>
+  </flow>
+</mule>

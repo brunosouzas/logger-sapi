@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" 
+    xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:spring="http://www.mulesoft.org/schema/mule/spring"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+                        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                        http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd">
+  
+  
+  <sub-flow name="basic-authentication">
+    <http:basic-security-filter 
+      doc:name="Basic security filter"
+      doc:id="0a24ecaa-b335-4d93-a25d-3d420713808b" 
+      realm="mule" />
+      
+    <spring:authorization-filter 
+      doc:name="Authorization filter"
+      doc:id="acfd4a54-4edd-4877-92d5-d8a2cdf46686" 
+      requiredAuthorities="ROLE_ADMIN" />
+  </sub-flow>
+  
+  </mule>

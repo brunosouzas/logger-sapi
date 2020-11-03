@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit" 
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core" 
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		                  http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		                  http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+                          http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+  
+  <munit:config name="new-test-suite.xml"/>
+  
+  
+  
+  <munit:test name="health-ready-success" doc:id="c6be41df-86fb-42a7-bc2e-81d4549dbf47" description="Test">
+    <munit:execution>
+      <flow-ref doc:name="api-ready" doc:id="3a8ed580-9b1e-4bbf-b510-b9f758950c84" name="api-ready"/>
+    </munit:execution>
+    <munit:validation >
+      <munit-tools:assert-that doc:name="Assert that - appName" doc:id="a10d49b3-b8ae-4221-a513-90b6d1341c45" message="app name is wrong." expression="#[payload.apName]" is="#[MunitTools::equalTo(app.name)]"/>
+    </munit:validation>
+  </munit:test>
+  
+  
+
+  <munit:test name="health-alive-success" doc:id="66a17bba-580c-4171-acf7-1a1bf04b6247" description="Test">
+    <munit:execution>
+      <flow-ref doc:name="api-alive" doc:id="3a24d6ba-d728-4abd-96c6-fb21f9b393a7" name="api-alive"/>
+    </munit:execution>
+    <munit:validation >
+      <munit-tools:assert-that doc:name="Assert that - UP" doc:id="f4976ae5-52f6-49e8-a957-17d0b72b8df5" message="app don't UP" expression="#[payload]" is='#[MunitTools::equalTo("UP")]'/>
+    </munit:validation>
+  </munit:test>
+
+</mule>

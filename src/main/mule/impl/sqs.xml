@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" 
+      xmlns:sqs="http://www.mulesoft.org/schema/mule/sqs"
+      xmlns="http://www.mulesoft.org/schema/mule/core" 
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                          http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd
+                          http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+  
+  
+  
+  <flow name="sqs::Flow" doc:id="a32a318b-71b2-4d5f-89f5-91bfec678910" >
+    <sqs:receivemessages 
+      doc:name="error-log-api" 
+      doc:id="130bcae9-4547-464a-8c1d-66a1a62406bf" 
+      config-ref="amazonSQSconfiguration" 
+      visibilityTimeout="1" 
+      visibilityTimeoutUnit="MINUTES" 
+      queueUrl="${aws.sqs.queue.url}">
+      <reconnect count="3" />
+    </sqs:receivemessages>
+    
+    <ee:transform doc:name="payload" doc:id="74a63109-9952-4d28-9206-15268a119f52" >
+      <ee:message >
+        <ee:set-payload resource="dw/logger/sqs/payload.dwl" />
+      </ee:message>
+    </ee:transform>
+    
+    <logger 
+      doc:name="console logger" 
+      doc:id="7567894a-17e4-41cc-b5a7-36899a7348a9" 
+      level="ERROR"
+      message="#[payload]" 
+      category="com.brunosouzas.api.log"/>
+  </flow>
+</mule>

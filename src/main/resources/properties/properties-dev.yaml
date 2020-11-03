@@ -1,0 +1,23 @@
+# This file contains properties meant to be used in DEVELOPMENT Environment.
+
+
+# API Identify (Get in API Manager) - used in autodiscovery in global file.
+api:
+  id: ""
+  
+  
+  
+# Logger Properties
+logger:
+  prettyPrint: "true" 
+  disabledFields: ""
+  
+  
+
+# AWS SQS Queue
+aws:
+  region: "US_EAST_1"
+  sqs:
+    queue: 
+      arn: "arn:aws:sqs:us-east-1:381061513097:error-log-api"
+      url: "https://sqs.us-east-1.amazonaws.com/381061513097/error-log-api"

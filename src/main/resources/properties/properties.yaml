@@ -1,0 +1,17 @@
+#  This property file contains environment agnostic properties
+
+# HTTPS Properties
+http:
+  host: "0.0.0.0"
+  port: "8081"
+  
+
+  
+  
+#  spec Properties
+api:
+  groupId: "${api.groupId}"
+  artifactId: "${api.artifactId}"
+  version: "${api.version}"
+  spec: "resource::${api.groupId}:${api.artifactId}:${api.version}:raml:zip:api.raml"
+  majorVersion: "v1"
